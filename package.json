@@ -1,0 +1,22 @@
+{
+  "name": "rbac",
+  "version": "1.0.0",
+  "description": "Authorizing user roles",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chittenikhil250/rbac.git"
+  },
+  "author": "Nikhil Chitte",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chittenikhil250/rbac/issues"
+  },
+  "homepage": "https://github.com/chittenikhil250/rbac#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
