@@ -11,6 +11,6 @@ router.get('/', (req, res)=>{
     }
 });
 router.get('/about', (req, res)=> res.sendFile(path.join(__dirname, '..', '..', 'public', '/about.html')));
-router.get('*', (req, res)=> res.sendFile(path.join(__dirname, '..', 'views', '/NotFound.html')));
+router.get('*', (req, res)=> res.render('Notfound'));
 
 module.exports = router;

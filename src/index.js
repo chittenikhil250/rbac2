@@ -3,10 +3,12 @@ const cors = require('cors');
 const session = require('express-session');
 const flash = require('connect-flash');
 const mongoose = require('mongoose');
-const ejs = require('ejs');
 const path = require('path');
+const passport = require('passport');
 const routes = require('./routes/routes');
 const loginRoute = require('./routes/auth/login');
+const adminRoute = require('./routes/users/admin');
+const userRoute = require('./routes/users/profile');
 const config = require('./config/config');
 const signupRoute = require('./routes/auth/signup');
 require('dotenv').config();
@@ -44,12 +46,21 @@ app.use(session({
     }
 }));
 
+//for passport authentication
+app.use(passport.initialize());
+app.use(passport.session());
+require('./utils/auth');
+
+
 //connect-flash for flash messages
 app.use(flash());
 
 //login and signup routes
 app.use('/auth', loginRoute);
 app.use('/auth', signupRoute);
+//user routes
+app.use('/user', userRoute);
+app.use('/user', adminRoute);
 //handle routes
 app.use(routes);
 
