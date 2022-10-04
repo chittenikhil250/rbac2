@@ -11,6 +11,7 @@ passport.use(
             const user = await User.findOne({email});
             if(!user){
                 done(null, false, {message: 'You tried to login, Create an account Instead'});
+                return;
             }
             const isMatch = await user.isValidPassword(password);
             return isMatch ? done(null, user) : done(null, false, {message: 'Incorrect Password'});

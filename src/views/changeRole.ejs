@@ -1,12 +1,39 @@
 <%- include('./layouts/header.ejs') %>
-    <center>
-        <h1>change user roles</h1>
-    </center>
-    <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>5</li>
-    </ul>
+<%- include('./layouts/navbar.ejs') %>
+<center>
+    <h1 class="mt-4">Manage User Roles </h1>
+</center>
+<div class="container">
+    
+    <%- include('./layouts/alert.ejs') %>
+    
+
+    <table class="table mt-5" style="width: 100%; table-layout: fixed; word-wrap: normal;">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email </th>
+                <th scope="col">Role</th>
+              </tr>
+            </thead>
+            <tbody>
+                <% locals.users.map((user)=>{ %>
+                    <tr>
+                        <td><%= user.id%></td>
+                        <td>
+                            <a href="/user/<%=user.id%>">
+                                <%= user.name%>
+                            </a>
+                        </td>
+                        <td><%= user.email%></td>
+                        <td><%= user.role%></td>
+                    </tr>
+               <% }) %>
+            </tbody>
+          </table>
+          <center>
+              <button class="btn btn-primary px-3 mt-4">Update</button>
+          </center>
+    </div>
 <%- include('./layouts/footer.ejs') %>

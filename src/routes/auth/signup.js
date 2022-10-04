@@ -1,11 +1,10 @@
 const router = require('express').Router();
-const path = require('path');
 const user = require('../../models/user');
 const {body, validationResult} = require('express-validator');
 
 
 router.get('/signup', (req, res, next)=> {
-    res.render('signup');
+    req.user ? res.redirect('/user/profile') : res.render('signup');
 });
 
 router.post('/signup',
@@ -31,14 +30,14 @@ router.post('/signup',
         const errors = validationResult(req);
         if(!errors.isEmpty()){
             errors.array().forEach(err => {
-                req.flash('alert alert-danger alert-dismissible fade show', err.msg);
+                req.flash(' alert-danger ', err.msg);
             });
             res.render('signup', {messages: req.flash()});
             return;
         }
         const newUser = new user(req.body);
         await newUser.save();
-        req.flash('alert alert-success alert-dismissible fade show', 'Registration succesfull');
+        req.flash(' alert-success ', 'Registration succesfull');
         res.render('login', {messages: req.flash()});
     } catch (err) {
         console.error(err);

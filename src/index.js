@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const MongoStore = require('connect-mongo');
 const session = require('express-session');
 const flash = require('connect-flash');
 const mongoose = require('mongoose');
@@ -43,7 +44,8 @@ app.use(session({
         // secure: true,
         httpOnly: true,
         maxAge: 14400000
-    }
+    },
+    store: MongoStore.create({mongoUrl: config.db_url})
 }));
 
 //for passport authentication
@@ -54,6 +56,13 @@ require('./utils/auth');
 
 //connect-flash for flash messages
 app.use(flash());
+
+//setting the user who logged in 
+app.use((req, res, next)=>{
+    res.locals.user = req.user;
+    res.locals.messages = req.flash();
+    next();
+})
 
 //login and signup routes
 app.use('/auth', loginRoute);

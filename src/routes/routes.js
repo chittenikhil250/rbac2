@@ -2,7 +2,7 @@ const path = require('path');
 const router = require('express').Router();
 
 router.get('/', (req, res)=>{
-    const login = false;
+    const login = req.user;
     if(!login){
         res.redirect('/auth/login');
     }
