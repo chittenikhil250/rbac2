@@ -15,6 +15,7 @@
                 <th scope="col">Name</th>
                 <th scope="col">Email </th>
                 <th scope="col">Role</th>
+                <th scope="col">Update </th>
               </tr>
             </thead>
             <tbody>
@@ -27,13 +28,22 @@
                             </a>
                         </td>
                         <td><%= user.email%></td>
-                        <td><%= user.role%></td>
+                        <form action="/user/admin/update" method="post">
+                            <td>
+                                <input type="hidden" name="id" value="<%=user.id%>">
+                                <select name="role" class="accordion" id="role">
+                                    <option <%= user.role === 'moderator' ? 'selected' : '' %> class="accordion-item" value="moderator">Moderator </option>
+                                    <option <%= user.role === 'admin' ? 'selected' : '' %> class="accordion-item" value="admin">Admin</option>
+                                    <option <%= user.role === 'member' ? 'selected' : '' %> class="accordion-item" value="member">Member</option>
+                                </select>
+                                <td>
+                                    <input type="submit" class="btn btn-primary px-3" value="Update"/>
+                                </td>
+                            </td>
+                        </form>
                     </tr>
                <% }) %>
             </tbody>
           </table>
-          <center>
-              <button class="btn btn-primary px-3 mt-4">Update</button>
-          </center>
     </div>
 <%- include('./layouts/footer.ejs') %>
