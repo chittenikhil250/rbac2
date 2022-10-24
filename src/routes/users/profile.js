@@ -6,7 +6,7 @@ router.get('/profile', (req, res)=>{
         res.render('profile');
     }else{
         req.flash('alert alert-danger alert-dismissible fade show', 'You have to login first')
-        res.render('login', {messages: req.flash()})
+        res.render('login', {messages: req.flash()});
     }
 });
 

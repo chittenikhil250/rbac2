@@ -5,6 +5,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const mongoose = require('mongoose');
 const path = require('path');
+var bodyParser = require('body-parser')
 const passport = require('passport');
 const routes = require('./routes/routes');
 const loginRoute = require('./routes/auth/login');
@@ -19,6 +20,7 @@ const port = process.env.port || 3000;
 
 //initialization and some built in middlewares
 const app = express();
+app.use(bodyParser.json());
 app.use(express.urlencoded({extended: false})); 
 app.use(cors());
 app.use(express.json());
@@ -40,11 +42,6 @@ app.use(session({
     secret: process.env.secret,
     resave: false,
     saveUninitialized: false,
-    cookie:{
-        secure: true,
-        httpOnly: true,
-        maxAge: 14400000
-    },
     store: MongoStore.create({mongoUrl: config.db_url})
 }));
 
