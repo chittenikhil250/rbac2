@@ -6,7 +6,10 @@ const roles = require('../../utils/constants');
 async function roleCheck(req, res, next){
     try {
         const users = await user.find();
-        (req.user.role=="admin") ? res.render('changeRole', {users: users}) : res.send('Access Denied!!');
+        (req.user.role=="admin") ? 
+        // res.render('changeRole', {users: users})
+        res.status(200).json(users)
+         : res.status(401).json({message : 'Access Denied!!'});
     } catch (error) {
         next(error);
     } 
@@ -14,10 +17,11 @@ async function roleCheck(req, res, next){
 
 router.get('/admin', async(req, res, next)=> {
     if(!req.user){
-            req.flash('alert-danger', 'You have to login first');
-            res.render('login', {messages: req.flash()});
+            // req.flash('alert-danger', 'You have to login first');
+            // res.render('login', {messages: req.flash()});
+            res.status(401).json({message: 'You Have to Login First!!'});
         }
-    else{
+    else{ 
         roleCheck(req, res, next);
     }
 });
@@ -26,12 +30,13 @@ router.get('/:id', async(req, res, next)=>{
     try {
         const {id} = req.params;
         if(!mongoose.Types.ObjectId.isValid(id)){
-            req.flash('alert alert-danger alert-dismissible fade show', 'Not a Valid User Id');
-            res.render('changeRole', {messsages: req.flash(), users: await user.find()});
-            return;
+            return res.status(400).json({message: 'Not a Valid User ID!!'})
+            // req.flash('alert alert-danger alert-dismissible fade show', 'Not a Valid User Id');
+            // res.render('changeRole', {messsages: req.flash(), users: await user.find()});
         }
         const person = await user.findById(id);
-        res.render('profileTemplate', {user: person});
+        res.status(200).json({person});
+        // res.render('profileTemplate', {user: person});
     } catch (err) {
         console.error(err);
         next(err);

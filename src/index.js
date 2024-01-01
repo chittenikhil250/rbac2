@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const MongoStore = require('connect-mongo');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -18,11 +19,16 @@ require('dotenv').config();
 
 const port = process.env.port || 3000;
 
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true
+}
+
 //initialization and some built in middlewares
 const app = express();
 app.use(bodyParser.json());
 app.use(express.urlencoded({extended: false})); 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.static('public'));
 app.set('views', path.join(__dirname, './views'));
@@ -42,7 +48,12 @@ app.use(session({
     secret: process.env.secret,
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({mongoUrl: config.db_url})
+    store: MongoStore.create({mongoUrl: config.db_url}),
+    cookie:{
+        maxAge: 1000*60*60*24,
+        httpOnly: true,
+        secure: false
+    }
 }));
 
 //for passport authentication
