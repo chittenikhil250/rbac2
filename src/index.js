@@ -20,7 +20,7 @@ require('dotenv').config();
 const port = process.env.port || 3000;
 
 const corsOptions = {
-    origin: 'https://rbacfrontend.vercel.app',
+    origin: ['https://rbacfrontend.vercel.app', 'http://localhost:3000'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 }
