@@ -80,6 +80,11 @@ app.use('/user', adminRoute);
 //handle routes
 app.use(routes);
 
+app.use(function (request, response, next) {
+    response.header("Access-Control-Allow-Origin", "*");
+    response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 
 
 const server = async() => {
