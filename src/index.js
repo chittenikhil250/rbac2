@@ -44,6 +44,7 @@ app.use((error, req, res, next) => {
 });
 
 app.set("trust proxy", 1);
+app.enable('trust proxy')
 
 //express-session 
 app.use(session({
