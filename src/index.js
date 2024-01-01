@@ -43,6 +43,7 @@ app.use((error, req, res, next) => {
     res.render('error_40x', { error });
 });
 
+app.set("trust proxy", 1);
 
 //express-session 
 app.use(session({
