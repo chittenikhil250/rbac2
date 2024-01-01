@@ -49,9 +49,11 @@ app.use(session({
     secret: process.env.secret,
     resave: false,
     saveUninitialized: false,
+    name: 'rbacweb2',
     store: MongoStore.create({mongoUrl: config.db_url}),
     cookie:{
         maxAge: 1000*60*60*24,
+        sameSite: 'none',
         httpOnly: true,
         secure: true
     }
