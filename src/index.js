@@ -20,7 +20,8 @@ require('dotenv').config();
 const port = process.env.port || 3000;
 
 const corsOptions = {
-    credentials: true
+    credentials: true,
+    origin: 'https://rbacfrontend.vercel.app/'
 }
 
 //initialization and some built in middlewares
@@ -80,25 +81,25 @@ app.use('/user', adminRoute);
 //handle routes
 app.use(routes);
 
-app.use((req, res, next) => {
-    res.setHeader(
-      "Access-Control-Allow-Origin",
-      "https://rbacfrontend.vercel.app/"
-    );
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS,CONNECT,TRACE"
-    );
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization, X-Content-Type-Options, Accept, X-Requested-With, Origin, Access-Control-Request-Method, Access-Control-Request-Headers"
-    );
-    res.setHeader("Access-Control-Allow-Credentials", true);
-    res.setHeader("Access-Control-Allow-Private-Network", true);
-    res.setHeader("Access-Control-Max-Age", 7200);
+// app.use((req, res, next) => {
+//     res.setHeader(
+//       "Access-Control-Allow-Origin",
+//       "https://rbacfrontend.vercel.app/"
+//     );
+//     res.setHeader(
+//       "Access-Control-Allow-Methods",
+//       "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS,CONNECT,TRACE"
+//     );
+//     res.setHeader(
+//       "Access-Control-Allow-Headers",
+//       "Content-Type, Authorization, X-Content-Type-Options, Accept, X-Requested-With, Origin, Access-Control-Request-Method, Access-Control-Request-Headers"
+//     );
+//     res.setHeader("Access-Control-Allow-Credentials", true);
+//     res.setHeader("Access-Control-Allow-Private-Network", true);
+//     res.setHeader("Access-Control-Max-Age", 7200);
   
-    next();
-  });
+//     next();
+//   });
 
 
 const server = async() => {
