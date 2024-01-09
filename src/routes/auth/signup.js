@@ -30,19 +30,18 @@ router.post('/signup',
         const errors = validationResult(req);
         if(!errors.isEmpty()){
             errors.array().forEach(err => {
-                req.flash(' alert-danger ', err.msg);
+                const msg = err.msg;
+                res.status(400).json({message: msg});
             });
-            res.render('signup', {messages: req.flash()});
             return;
         }
         const newUser = new user(req.body);
         await newUser.save();
-        req.flash(' alert-success ', 'Registration succesfull');
-        res.render('login', {messages: req.flash()});
+        return res.status(200).json({message: 'Signup Succesfull'});
     } catch (err) {
         console.error(err);
-        throw new Error('cant create new user');
         next(err);
+        throw new Error('cant create new user');
     }
 });
 

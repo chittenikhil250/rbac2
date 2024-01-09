@@ -7,6 +7,7 @@ const flash = require('connect-flash');
 const mongoose = require('mongoose');
 const path = require('path');
 var bodyParser = require('body-parser')
+const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const routes = require('./routes/routes');
 const loginRoute = require('./routes/auth/login');
@@ -20,7 +21,7 @@ require('dotenv').config();
 const port = process.env.port || 3000;
 
 const corsOptions = {
-    origin: ['https://rbacfrontend.vercel.app', 'http://localhost:3000'],
+    origin: 'http://localhost:3000',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 }
@@ -28,7 +29,8 @@ const corsOptions = {
 //initialization and some built in middlewares
 const app = express();
 app.use(bodyParser.json());
-app.use(express.urlencoded({extended: false})); 
+app.use(express.urlencoded({extended: false}));
+app.use(cookieParser())
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.static('public'));
@@ -43,37 +45,16 @@ app.use((error, req, res, next) => {
     res.render('error_40x', { error });
 });
 
-app.set("trust proxy", 1);
-app.enable('trust proxy')
-
-//express-session 
-app.use(session({
-    secret: process.env.secret,
-    resave: false,
-    saveUninitialized: false,
-    name: 'rbacweb2',
-    store: MongoStore.create({mongoUrl: config.db_url}),
-    cookie:{
-        maxAge: 1000*60*60*24,
-        sameSite: 'none',
-        httpOnly: true,
-        secure: true
-    }
-}));
 
 //for passport authentication
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 require('./utils/auth');
 
-
-//connect-flash for flash messages
-app.use(flash());
 
 //setting the user who logged in 
 app.use((req, res, next)=>{
     res.locals.user = req.user;
-    res.locals.messages = req.flash();
     next();
 })
 
@@ -85,26 +66,6 @@ app.use('/user', userRoute);
 app.use('/user', adminRoute);
 //handle routes
 app.use(routes);
-
-// app.use((req, res, next) => {
-//     res.setHeader(
-//       "Access-Control-Allow-Origin",
-//       "https://rbacfrontend.vercel.app/"
-//     );
-//     res.setHeader(
-//       "Access-Control-Allow-Methods",
-//       "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS,CONNECT,TRACE"
-//     );
-//     res.setHeader(
-//       "Access-Control-Allow-Headers",
-//       "Content-Type, Authorization, X-Content-Type-Options, Accept, X-Requested-With, Origin, Access-Control-Request-Method, Access-Control-Request-Headers"
-//     );
-//     res.setHeader("Access-Control-Allow-Credentials", true);
-//     res.setHeader("Access-Control-Allow-Private-Network", true);
-//     res.setHeader("Access-Control-Max-Age", 7200);
-  
-//     next();
-//   });
 
 
 const server = async() => {
