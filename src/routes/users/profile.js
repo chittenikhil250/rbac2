@@ -4,6 +4,7 @@ const router = require('express').Router();
 
 router.get('/profile', (req, res)=>{
     const token = req.cookies.token;
+    console.log(token);
     if(!token) return res.status(401).json({message: 'You need to Login First'});
     const decoded = verifyToken(token);
     if(!decoded){
