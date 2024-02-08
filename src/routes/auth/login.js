@@ -19,11 +19,10 @@ router.post('/login', (req, res, next)=>{
                 })
             }
             const token = generateToken(user);
-            res.cookie('token', token,  { httpOnly: true, secure: true });
-            return res.status(200).json({
-                message: 'Login Succesfull',
+            return res.cookie('token', token,  { httpOnly: true, secure: true }).status(200).json({
+                 message: 'Login Succesfull',
                 user: user
-            })
+            });
         }
     )(req, res, next);
 });
